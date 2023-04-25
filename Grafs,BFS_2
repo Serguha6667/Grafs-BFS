@@ -1,0 +1,21 @@
+class Solution:
+    def makeConnected(self, n: int, connections: List[List[int]]) -> int:
+        if len(connections) < n - 1:
+            return -1
+        
+        parent = list(range(n))
+        
+        def find(node):
+            if parent[node] != node:
+                parent[node] = find(parent[node])
+            return parent[node]
+        
+        def union(node1, node2):
+            parent[find(node1)] = find(node2)
+        
+        for c in connections:
+            union(c[0], c[1])
+        
+        components = set(find(node) for node in range(n))
+        
+        return len(components) - 1
